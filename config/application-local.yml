@@ -1,0 +1,20 @@
+server:
+  port: 6969
+
+#logging:
+#  level:
+#    com:
+#      zaxxer:
+#        hikari:
+#            HikariConfig: DEBUG
+
+spring:
+  h2:
+    console:
+      enabled: true
+  datasource:
+    generate-unique-name: false
+    name: productcrud
+  jpa:
+    hibernate:
+      ddl-auto: update
