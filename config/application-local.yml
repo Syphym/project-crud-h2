@@ -1,13 +1,6 @@
 server:
   port: 6969
 
-#logging:
-#  level:
-#    com:
-#      zaxxer:
-#        hikari:
-#            HikariConfig: DEBUG
-
 spring:
   h2:
     console:

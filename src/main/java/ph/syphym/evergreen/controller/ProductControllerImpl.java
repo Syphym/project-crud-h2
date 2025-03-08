@@ -8,7 +8,7 @@ import ph.syphym.evergreen.constant.OrderCriteria;
 import ph.syphym.evergreen.constant.OrderDirection;
 import ph.syphym.evergreen.dto.BaseResponseDTO;
 import ph.syphym.evergreen.dto.ProductDTO;
-import ph.syphym.evergreen.service.ProductService;
+import ph.syphym.evergreen.service.GetProductService;
 
 import java.util.List;
 
@@ -16,10 +16,10 @@ import java.util.List;
 @RequestMapping("/v2/products")
 public class ProductControllerImpl implements ProductController {
 
-    private final ProductService productService;
+    private final GetProductService productService;
 
     @Autowired
-    public ProductControllerImpl(ProductService productService) {
+    public ProductControllerImpl(GetProductService productService) {
         this.productService = productService;
     }
 

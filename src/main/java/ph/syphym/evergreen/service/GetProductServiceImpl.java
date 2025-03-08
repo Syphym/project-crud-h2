@@ -1,5 +1,6 @@
 package ph.syphym.evergreen.service;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,16 +17,17 @@ import java.util.UUID;
 import java.util.function.Function;
 
 @Service
-public class ProductServiceImpl implements ProductService {
+public class GetProductServiceImpl implements GetProductService {
     private static final int PAGE_SIZE = 10;
 
     private final ProductRepository productRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public GetProductServiceImpl(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
     @Override
+    @Cacheable("getProductByIdCache")
     public ProductDTO getProductById(String id) {
         Product product = productRepository.findById(UUID.fromString(id)).get();
 
@@ -41,6 +43,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable("getProductByCriteriaCache")
     public List<ProductDTO> getProductByCriteria(String criteria, Integer page) {
         List<Product> listOfProducts = productRepository.findByCriteria(criteria, createPageRequest(page));
         return listOfProducts.stream()
@@ -49,6 +52,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable("getProductByOrderCache")
     public List<ProductDTO> getOrderedProducts(OrderCriteria orderCriteria, OrderDirection orderDirection, Integer page) {
         List<Product> products = fetchProducts(orderCriteria, orderDirection, page);
         return products.stream()

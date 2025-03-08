@@ -6,7 +6,7 @@ import ph.syphym.evergreen.dto.ProductDTO;
 
 import java.util.List;
 
-public interface ProductService {
+public interface GetProductService {
     ProductDTO getProductById(String id);
 
     List<ProductDTO> getProductByCriteria(String criteria, Integer page);
