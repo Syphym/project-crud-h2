@@ -2,7 +2,6 @@ package ph.syphym.evergreen.config;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
@@ -20,11 +19,11 @@ public class CacheConfig {
     public CacheManager cacheManager(){
         ConcurrentMapCacheManager manager = new ConcurrentMapCacheManager();
         manager.setAllowNullValues(false);
-        manager.setCacheNames(Arrays.asList("getProductByIdCache","getProductByCriteriaCache","getProductByOrderCache"));
+        manager.setCacheNames(Arrays.asList("GET_PRODUCT_BY_ORDER", "GET_PRODUCT_BY_ID", "GET_PRODUCT_BY_CRITERIA"));
         return manager;
     }
 
-    @CacheEvict(value = { "getProductByIdCache", "getProductByCriteriaCache","getProductByOrderCache"}, allEntries = true)
+    @CacheEvict(value = {"GET_PRODUCT_BY_ORDER", "GET_PRODUCT_BY_ID", "GET_PRODUCT_BY_CRITERIA"}, allEntries = true)
     @Scheduled(fixedDelay = 300000, initialDelay = 0)
     public void evictProductCache() {
         System.out.println("Evicting Product Cache");

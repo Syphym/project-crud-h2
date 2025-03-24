@@ -1,10 +1,8 @@
 package ph.syphym.evergreen.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ph.syphym.evergreen.constant.OrderCriteria;
 import ph.syphym.evergreen.constant.OrderDirection;
 import ph.syphym.evergreen.dto.BaseResponseDTO;
@@ -25,4 +23,11 @@ public interface ProductController {
     ResponseEntity<BaseResponseDTO<List<ProductDTO>>> getOrderedProducts(@RequestParam OrderCriteria orderCriteria,
                                                                          @RequestParam OrderDirection orderDirection,
                                                                          @RequestHeader(required = false) Integer page);
+
+    @PostMapping
+    ResponseEntity<BaseResponseDTO<ProductDTO>> createNewProduct(@Valid @RequestBody ProductDTO productDTO);
+
+    @PutMapping("/{uuid}")
+    ResponseEntity<BaseResponseDTO<ProductDTO>> updateExistingProduct( @PathVariable("uuid") String uuid,
+                                                                       @Valid @RequestBody ProductDTO productDTO);
 }
