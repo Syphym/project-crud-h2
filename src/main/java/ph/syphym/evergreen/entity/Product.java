@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import ph.syphym.evergreen.constant.RegionEnums;
@@ -21,7 +21,11 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(schema = "PRODUCT_CRUD", name ="PRODUCTS")
 public class Product {
 
@@ -29,19 +33,15 @@ public class Product {
     @Column(name = "id")
     private UUID id;
 
-    @Size(min = 15, message = "Description must be at least 15 characters long")
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Size(min = 20, message = "Description must be at least 20 characters long")
     @Column(name = "description", nullable = false)
     private String description;
 
-    @PositiveOrZero(message = "Price must not be negative")
     @Column(name = "price", nullable = false)
-    private BigDecimal price;
+    private Double price;
 
-    @NotBlank(message = "Manufacturer is required")
     @Column(name = "manufacturer", nullable = false)
     private String manufacturer;
 

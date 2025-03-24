@@ -5,10 +5,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(schema = "PRODUCT_CRUD", name ="CATEGORIES")
 public class Category {
 
@@ -16,7 +20,6 @@ public class Category {
     @Column(name = "id")
     private Integer id;
 
-    @Size(min = 20, message = "Name must be at least 20 characters long")
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 

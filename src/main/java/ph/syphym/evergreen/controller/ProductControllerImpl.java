@@ -1,5 +1,6 @@
 package ph.syphym.evergreen.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,7 +9,7 @@ import ph.syphym.evergreen.constant.OrderCriteria;
 import ph.syphym.evergreen.constant.OrderDirection;
 import ph.syphym.evergreen.dto.BaseResponseDTO;
 import ph.syphym.evergreen.dto.ProductDTO;
-import ph.syphym.evergreen.service.GetProductService;
+import ph.syphym.evergreen.service.ProductService;
 
 import java.util.List;
 
@@ -16,10 +17,10 @@ import java.util.List;
 @RequestMapping("/v2/products")
 public class ProductControllerImpl implements ProductController {
 
-    private final GetProductService productService;
+    private final ProductService productService;
 
     @Autowired
-    public ProductControllerImpl(GetProductService productService) {
+    public ProductControllerImpl(ProductService productService) {
         this.productService = productService;
     }
 
@@ -36,5 +37,15 @@ public class ProductControllerImpl implements ProductController {
     @Override
     public ResponseEntity<BaseResponseDTO<List<ProductDTO>>> getOrderedProducts(OrderCriteria orderCriteria, OrderDirection orderDirection, Integer page) {
         return ResponseEntity.ok(new BaseResponseDTO<>("200", "Success", productService.getOrderedProducts(orderCriteria, orderDirection, page)));
+    }
+
+    @Override
+    public ResponseEntity<BaseResponseDTO<ProductDTO>> createNewProduct(ProductDTO productDTO) {
+        return ResponseEntity.ok(new BaseResponseDTO<>("200", "Success", productService.createProduct(productDTO)));
+    }
+
+    @Override
+    public ResponseEntity<BaseResponseDTO<ProductDTO>> updateExistingProduct(String id, @Valid ProductDTO productDTO) {
+        return ResponseEntity.ok(new BaseResponseDTO<>("200", "Success", productService.updateProduct(id,productDTO)));
     }
 }
