@@ -1,6 +1,5 @@
 package ph.syphym.evergreen.service;
 
-import org.hibernate.annotations.Cache;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -15,9 +14,13 @@ import ph.syphym.evergreen.entity.Product;
 import ph.syphym.evergreen.exception.ProductNotFoundException;
 import ph.syphym.evergreen.repository.CategoryRepository;
 import ph.syphym.evergreen.repository.ProductRepository;
+import ph.syphym.evergreen.util.ProfanityFilter;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 @Service
@@ -26,10 +29,12 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ProfanityFilter profanityFilter;
 
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository,ProfanityFilter profanityFilter) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.profanityFilter = profanityFilter;
     }
 
     @Override
@@ -70,6 +75,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDTO createProduct(ProductDTO productDTO) {
 
+        profanityFilter.validateProfanityFilter(productDTO);
+
         Category getCategory = categoryRepository.findByName(productDTO.getCategory());
 
         Product productToBeSaved = buildProductEntity(productDTO, getCategory);
@@ -83,6 +90,8 @@ public class ProductServiceImpl implements ProductService {
     @CachePut(value = {"GET_PRODUCT_BY_ORDER", "GET_PRODUCT_BY_ID", "GET_PRODUCT_BY_CRITERIA"}, key = "#id")
     @CacheEvict(value = {"GET_PRODUCT_BY_ORDER", "GET_PRODUCT_BY_ID", "GET_PRODUCT_BY_CRITERIA"}, key = "#id", allEntries = true)
     public ProductDTO updateProduct(String id, ProductDTO productDTO) {
+        profanityFilter.validateProfanityFilter(productDTO);
+
         UUID productId = UUID.fromString(id);
 
         Product product = productRepository.findById(productId)
