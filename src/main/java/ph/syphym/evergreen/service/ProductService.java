@@ -3,7 +3,6 @@ package ph.syphym.evergreen.service;
 import ph.syphym.evergreen.constant.OrderCriteria;
 import ph.syphym.evergreen.constant.OrderDirection;
 import ph.syphym.evergreen.dto.ProductDTO;
-import ph.syphym.evergreen.entity.Product;
 
 import java.util.List;
 

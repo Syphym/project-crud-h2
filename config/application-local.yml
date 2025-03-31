@@ -11,3 +11,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+profanityfilter:
+  base-url: https://api.api-ninjas.com/v1/profanityfilter
+  api-key: 7oj1WuhNxI77flVgDlT+fA==WASbgA5oEs0xa5Xv

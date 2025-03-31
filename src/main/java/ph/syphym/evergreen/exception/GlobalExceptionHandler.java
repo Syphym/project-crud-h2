@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ph.syphym.evergreen.dto.ErrorResponseDTO;
+import ph.syphym.evergreen.integration.ProfanityFilterClient;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +22,13 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ErrorResponseDTO handleProductNotFoundException(ProductNotFoundException exception){
         return new ErrorResponseDTO(exception.getMessage(), "404");
+    }
+
+    @ExceptionHandler(ProfanityFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorResponseDTO handleProductNotFoundException(ProfanityFoundException exception){
+        return new ErrorResponseDTO(exception.getMessage(), "400");
     }
 
 
