@@ -48,4 +48,9 @@ public class ProductControllerImpl implements ProductController {
     public ResponseEntity<BaseResponseDTO<ProductDTO>> updateExistingProduct(String id, @Valid ProductDTO productDTO) {
         return ResponseEntity.ok(new BaseResponseDTO<>("200", "Success", productService.updateProduct(id,productDTO)));
     }
+
+    @Override
+    public ResponseEntity<BaseResponseDTO<Void>> deleteProduct(String uuid) {
+        return ResponseEntity.ok(new BaseResponseDTO<>("200", "Success", productService.deleteProduct(uuid)));
+    }
 }

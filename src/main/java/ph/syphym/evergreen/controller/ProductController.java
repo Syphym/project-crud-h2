@@ -30,4 +30,7 @@ public interface ProductController {
     @PutMapping("/{uuid}")
     ResponseEntity<BaseResponseDTO<ProductDTO>> updateExistingProduct( @PathVariable("uuid") String uuid,
                                                                        @Valid @RequestBody ProductDTO productDTO);
+
+    @DeleteMapping("/{uuid}")
+    ResponseEntity<BaseResponseDTO<Void>> deleteProduct(@PathVariable("uuid") String uuid);
 }

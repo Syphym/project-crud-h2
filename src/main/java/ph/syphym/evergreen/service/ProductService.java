@@ -16,4 +16,6 @@ public interface ProductService {
     ProductDTO createProduct(ProductDTO productDTO);
 
     ProductDTO updateProduct(String id, ProductDTO productDTO);
+
+    Void deleteProduct(String uuid);
 }

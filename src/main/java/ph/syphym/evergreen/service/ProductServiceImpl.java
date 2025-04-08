@@ -1,5 +1,6 @@
 package ph.syphym.evergreen.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -31,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
     private final ProfanityFilter profanityFilter;
 
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository,ProfanityFilter profanityFilter) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, ProfanityFilter profanityFilter) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.profanityFilter = profanityFilter;
@@ -101,6 +102,20 @@ public class ProductServiceImpl implements ProductService {
         Product productToBeSaved = updateProductEntity(productDTO, category, product);
         Product savedProduct = productRepository.save(productToBeSaved);
         return convertToProductDTO(savedProduct);
+    }
+
+    @Override
+    @Transactional
+    @CacheEvict(value = {"GET_PRODUCT_BY_ORDER", "GET_PRODUCT_BY_ID", "GET_PRODUCT_BY_CRITERIA"}, key = "#id", allEntries = true)
+    public Void deleteProduct(String uuid) {
+        UUID productId = UUID.fromString(uuid);
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(ProductNotFoundException::new);
+
+        productRepository.delete(product);
+
+        return null;
     }
 
     private List<Product> fetchProducts(OrderCriteria orderCriteria, OrderDirection orderDirection, Integer page) {
